@@ -21,3 +21,23 @@ class CreateWorkItemRequest(BaseModel):
     Title: str
     Description: str
     CreatedByUserID: int
+
+class ProjectCreate(BaseModel):
+
+    TenantID:   int
+    ProjectCode:    str
+    ProjectName:    str
+    Description:    str
+    IsActive:   bool
+
+class ProjectRead(BaseModel):
+
+    ProjectID: int
+    TenantID: int
+    ProjectCode: str
+    ProjectName: str
+    Description: str
+    IsActive: bool
+
+    class Config:
+        from_attributes = True
