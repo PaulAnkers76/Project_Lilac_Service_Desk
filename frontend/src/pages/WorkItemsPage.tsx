@@ -1,45 +1,42 @@
 import { useEffect, useState } from "react";
+
+import { Container, Typography } from "@mui/material";
+
+import SummaryCards from "../components/SummaryCards";
+import WorkItemsGrid from "../components/WorkItemsGrid";
+
 import { api } from "../services/api";
-import type { WorkItem } from "../types/WorkItem";
 
 export default function WorkItemsPage() {
 
-  const [workItems, setWorkItems] = useState<WorkItem[]>([]);
+  const [workItems, setWorkItems] = useState([]);
 
   useEffect(() => {
-    api
-      .get("/workitems")
+    api.get("/workitems")
       .then((response) => {
         setWorkItems(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
       });
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Service Desk</h1>
+    <Container>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Number</th>
-            <th>Title</th>
-          </tr>
-        </thead>
+      <Typography
+        variant="h3"
+        gutterBottom
+      >
+        Service Desk
+      </Typography>
 
-        <tbody>
-          {workItems.map((item) => (
-            <tr key={item.WorkItemID}>
-              <td>{item.WorkItemID}</td>
-              <td>{item.WorkItemNumber}</td>
-              <td>{item.Title}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <SummaryCards />
+
+      <br />
+
+      <WorkItemsGrid
+        rows={workItems}
+      />
+
+    </Container>
   );
+}
 }
