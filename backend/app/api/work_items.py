@@ -25,6 +25,20 @@ from app.services.workitem_service import (
     get_next_workitem_number
 )
 
+@router.get("/workitems/{workitemid}")
+def get_workitem(
+    workitemid: int,
+    db: Session = Depends(get_db)
+):
+
+    return (
+        db.query(WorkItem)
+        .filter(
+            WorkItem.WorkItemID == workitemid
+        )
+        .first()
+    )
+
 @router.post("/workitems")
 def create_workitem(
     request: CreateWorkItemRequest,

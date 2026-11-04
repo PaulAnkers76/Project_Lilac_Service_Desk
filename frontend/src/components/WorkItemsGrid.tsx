@@ -1,4 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 
 export default function WorkItemsGrid({
   rows,
@@ -11,7 +12,15 @@ export default function WorkItemsGrid({
       field: "WorkItemNumber",
       headerName: "Ticket",
       width: 160,
-    },
+
+      renderCell: (params) => (
+        <Link
+            to={`/workitems/${params.row.WorkItemID}`}
+        >
+            {params.value}
+        </Link>
+      ),
+      },
     {
       field: "Title",
       headerName: "Title",
