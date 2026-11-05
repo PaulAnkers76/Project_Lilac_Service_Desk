@@ -5,6 +5,11 @@ from sqlalchemy.orm import Session
 
 from app.database.dependencies import get_db
 from app.models.work_item import WorkItem
+from app.models.work_item_comment import WorkItemComment
+
+from app.schemas.work_item_comment import (
+    CreateCommentRequest
+)
 
 router = APIRouter()
 
@@ -92,3 +97,53 @@ def create_workitem(
     print("8. Refresh complete")
 
     return workitem
+
+@router.get(
+    "/workitems/{workitemid}/comments"
+)
+def get_comments(
+    workitemid: int,
+    db: Session = Depends(get_db)
+):
+
+    return (
+        db.query(WorkItemComment)
+        .filter(
+            WorkItemComment.WorkItemID
+            == workitemid
+        )
+        .all()
+    )
+
+@router.post(
+    "/workitems/{workitemid}/comments"
+)
+def create_comment(
+    workitemid: int,
+    request: CreateCommentRequest,
+    db: Session = Depends(get_db)
+):
+
+    comment = WorkItemComment()
+
+    comment.WorkItemID = workitemid
+
+    comment.CommentText = (
+        request.CommentText
+    )
+
+    comment.CreatedByUserID = (
+        request.CreatedByUserID
+    )
+
+    comment.IsInternal = (
+        request.IsInternal
+    )
+
+    db.add(comment)
+
+    db.commit()
+
+    db.refresh(comment)
+
+    return comment
