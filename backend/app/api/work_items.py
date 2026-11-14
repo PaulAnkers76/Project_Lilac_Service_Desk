@@ -10,6 +10,9 @@ from app.models.work_item_comment import WorkItemComment
 from app.schemas.work_item_comment import (
     CreateCommentRequest
 )
+from app.schemas.update_work_item import (
+    UpdateWorkItemRequest
+)
 
 router = APIRouter()
 
@@ -147,3 +150,29 @@ def create_comment(
     db.refresh(comment)
 
     return comment
+
+@router.put("/workitems/{workitemid}")
+def update_workitem(
+    workitemid: int,
+    request: UpdateWorkItemRequest,
+    db: Session = Depends(get_db)
+):
+
+    workitem = (
+        db.query(WorkItem)
+        .filter(
+            WorkItem.WorkItemID == workitemid
+        )
+        .first()
+    )
+
+    if not workitem:
+        return {"error": "Work item not found"}
+
+    workitem.StatusID = request.StatusID
+
+    db.commit()
+
+    db.refresh(workitem)
+
+    return workitem

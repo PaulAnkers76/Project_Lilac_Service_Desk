@@ -28,7 +28,7 @@ export default function WorkItemsPage() {
         Service Desk
       </Typography>
 
-      <SummaryCards />
+      <SummaryCards workItems={workItems} />
 
       <br />
 

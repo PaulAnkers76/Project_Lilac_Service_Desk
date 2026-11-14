@@ -3,6 +3,8 @@ from app.api.projects import router as projects_router
 from app.api.work_items import router
 from app.api.statuses import router as statuses_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.priorities import router as priorities_router
+from app.api.workitemtypes import router as workitemtypes_router
 
 
 app = FastAPI(
@@ -18,3 +20,5 @@ app.add_middleware(
 app.include_router(router)
 app.include_router(projects_router)
 app.include_router(statuses_router)
+app.include_router(priorities_router)
+app.include_router(workitemtypes_router)

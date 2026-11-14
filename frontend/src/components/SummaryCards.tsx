@@ -1,13 +1,19 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 
-export default function SummaryCards() {
+
+export default function SummaryCards ({
+  workItems,
+}: {
+    workItems: any[];
+}) {
+  const openIncidents = workItems.length;
   return (
     <Grid container spacing={2}>
       <Grid size={4}>
         <Card>
           <CardContent>
             <Typography variant="h5">
-              2
+              {openIncidents}
             </Typography>
 
             <Typography>
