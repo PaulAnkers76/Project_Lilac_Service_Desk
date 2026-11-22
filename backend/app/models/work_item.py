@@ -42,3 +42,8 @@ class WorkItem(Base):
         DateTime,
         server_default=func.sysutcdatetime()
     )
+
+    UpdatedDate = Column(
+        DateTime,
+        server_default=func.sysutcdatetime()
+    )

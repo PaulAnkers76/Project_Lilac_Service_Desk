@@ -10,14 +10,29 @@ import { api } from "../services/api";
 export default function WorkItemsPage() {
 
   const [workItems, setWorkItems] = useState([]);
+  const [statuses, setStatuses] = useState<any[]>([]);
+  const [priorities, setPriorities] = useState<any[]>([]);
 
   useEffect(() => {
-    api.get("/workitems")
-      .then((response) => {
-        setWorkItems(response.data);
-      });
-  }, []);
 
+    api.get("/workitems")
+        .then((response) => {
+            setWorkItems(response.data);
+        });
+
+    api.get("/statuses")
+        .then((response) => {
+            setStatuses(response.data);
+        });
+
+      api.get("/priorities")
+        .then((response) => {
+            setPriorities(response.data);
+        });
+
+}, []);
+    
+console.log(workItems);
   return (
     <Container>
 
@@ -33,7 +48,11 @@ export default function WorkItemsPage() {
       <br />
 
       <WorkItemsGrid
+       
         rows={workItems}
+        statuses={statuses}
+        priorities={priorities}
+
       />
 
     </Container>

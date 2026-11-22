@@ -102,24 +102,28 @@ export default function WorkItemDetailsPage() {
 
     const handleSaveStatus = async () => {
 
-        try {
+    console.log("Saving Status");
+    console.log("Selected Status:", selectedStatus);
 
-            await api.put(
-                `/workitems/${id}`,
-                {
-                    StatusID: selectedStatus,
-                }
-            );
+    try {
 
-            alert("Status updated");
+        await api.put(
+            `/workitems/${id}`,
+            {
+                StatusID: selectedStatus,
+            }
+        );
 
-        } catch (error) {
+        alert("Status updated");
 
-            console.error(error);
+    } catch (error) {
 
-        }
+        console.error(error);
 
-    };
+    }
+
+};
+
 
     if (!workItem) {
         return <div>Loading...</div>;

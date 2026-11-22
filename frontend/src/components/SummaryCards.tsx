@@ -6,7 +6,9 @@ export default function SummaryCards ({
 }: {
     workItems: any[];
 }) {
-  const openIncidents = workItems.length;
+  const openIncidents = workItems.filter(
+    item => ![5, 6].includes(item.StatusID)
+).length;
   return (
     <Grid container spacing={2}>
       <Grid size={4}>

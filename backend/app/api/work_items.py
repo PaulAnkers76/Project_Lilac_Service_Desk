@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
-
+from datetime import datetime, UTC
 from sqlalchemy.orm import Session
 
 from app.database.dependencies import get_db
@@ -142,7 +142,18 @@ def create_comment(
     comment.IsInternal = (
         request.IsInternal
     )
+    workitem = (
+        db.query(WorkItem)
+        .filter(
+            WorkItem.WorkItemID == workitemid
+    )
+        .first()
+)
 
+    if workitem:
+
+        workitem.UpdatedDate = datetime.now(UTC)
+    
     db.add(comment)
 
     db.commit()
@@ -156,6 +167,7 @@ def update_workitem(
     workitemid: int,
     request: UpdateWorkItemRequest,
     db: Session = Depends(get_db)
+    
 ):
 
     workitem = (
@@ -168,8 +180,11 @@ def update_workitem(
 
     if not workitem:
         return {"error": "Work item not found"}
-
+    print("PUT endpoint called")
+    print("WorkItemID:", workitemid)
+    print("StatusID received:", request.StatusID)
     workitem.StatusID = request.StatusID
+    workitem.UpdatedDate = datetime.now(UTC)
 
     db.commit()
 
