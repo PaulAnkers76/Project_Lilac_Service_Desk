@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 export default function WorkItemsGrid({
     rows,
     statuses,
-    priorities
+    priorities,
+    users
 }: {
     rows: any[];
     statuses: any[];
     priorities: any[];
+    users: any[];
 }) {
 
     const statusLookup = Object.fromEntries(
@@ -22,6 +24,13 @@ export default function WorkItemsGrid({
     (priorities ?? []).map((priority) => [
         priority.PriorityID,
         priority.PriorityName,
+    ])
+);
+
+const userLookup = Object.fromEntries(
+    (users ?? []).map((Users) => [
+        Users.UserIDID,
+        Users.DisplayName,
     ])
 );
 
@@ -62,6 +71,15 @@ export default function WorkItemsGrid({
                 priorityLookup[params.value] ??
                 params.value,
         },
+          {
+            field: "UserID",
+                headerName: "Assigned",
+                width: 150,
+
+                renderCell: (params: any) =>
+                    priorityLookup[params.value] ??
+                    params.value,
+            },
 
         {
     field: "CreatedDate",

@@ -24,6 +24,10 @@ export default function WorkItemDetailsPage() {
     const [newComment, setNewComment] = useState("");
     const [statuses, setStatuses] = useState<any[]>([]);
     const [selectedStatus, setSelectedStatus] = useState("");
+     const [users, setUsers] = useState<any[]>([]);
+
+const [assignedUser, setAssignedUser] =
+    useState<number | "">("");
 
     useEffect(() => {
 
@@ -36,6 +40,11 @@ export default function WorkItemDetailsPage() {
                 setSelectedStatus(
                     response.data.StatusID
                 );
+
+
+                setAssignedUser(
+                    response.data.AssignedUserID
+        );
 
             })
             .catch((error) => {
@@ -67,6 +76,12 @@ export default function WorkItemDetailsPage() {
 
                 setStatuses(response.data);
 
+            });
+
+        api
+            .get("/users")
+            .then((response) => {
+                setUsers(response.data);
             });
 
     }, [id]);

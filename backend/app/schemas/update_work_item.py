@@ -6,3 +6,4 @@ from pydantic import BaseModel
 class UpdateWorkItemRequest(BaseModel):
 
     StatusID: int
+    AssignedUserID: int

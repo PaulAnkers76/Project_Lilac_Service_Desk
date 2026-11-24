@@ -184,6 +184,9 @@ def update_workitem(
     print("WorkItemID:", workitemid)
     print("StatusID received:", request.StatusID)
     workitem.StatusID = request.StatusID
+    workitem.AssignedUserID = (
+    request.AssignedUserID
+)
     workitem.UpdatedDate = datetime.now(UTC)
 
     db.commit()
