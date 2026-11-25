@@ -12,6 +12,10 @@ export default function WorkItemsPage() {
   const [workItems, setWorkItems] = useState([]);
   const [statuses, setStatuses] = useState<any[]>([]);
   const [priorities, setPriorities] = useState<any[]>([]);
+  const [Users, setUsers] = useState<any[]>([]);
+
+  const [assignedUser, setAssignedUser] =
+     useState<number | "">("");
 
   useEffect(() => {
 
@@ -30,6 +34,12 @@ export default function WorkItemsPage() {
             setPriorities(response.data);
         });
 
+      api
+        .get("/Users")
+        .then((response) => {
+          setUsers(response.data);
+      });
+
 }, []);
     
 console.log(workItems);
@@ -43,7 +53,7 @@ console.log(workItems);
         Service Desk
       </Typography>
 
-      <SummaryCards workItems={workItems} />
+      
 
       <br />
 
@@ -52,6 +62,7 @@ console.log(workItems);
         rows={workItems}
         statuses={statuses}
         priorities={priorities}
+        users={Users}
 
       />
 

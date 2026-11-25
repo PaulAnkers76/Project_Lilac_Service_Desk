@@ -24,10 +24,10 @@ export default function WorkItemDetailsPage() {
     const [newComment, setNewComment] = useState("");
     const [statuses, setStatuses] = useState<any[]>([]);
     const [selectedStatus, setSelectedStatus] = useState("");
-     const [users, setUsers] = useState<any[]>([]);
+    const [Users, setUsers] = useState<any[]>([]);
 
-const [assignedUser, setAssignedUser] =
-    useState<number | "">("");
+    const [assignedUser, setAssignedUser] =
+        useState<number | "">("");
 
     useEffect(() => {
 
@@ -79,7 +79,7 @@ const [assignedUser, setAssignedUser] =
             });
 
         api
-            .get("/users")
+            .get("/Users")
             .then((response) => {
                 setUsers(response.data);
             });
@@ -126,10 +126,12 @@ const [assignedUser, setAssignedUser] =
             `/workitems/${id}`,
             {
                 StatusID: selectedStatus,
+                AssignedUserID: assignedUser
+
             }
         );
 
-        alert("Status updated");
+        alert("Item updated");
 
     } catch (error) {
 
@@ -145,7 +147,7 @@ const [assignedUser, setAssignedUser] =
     }
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="xl">
 
             <Paper
                 sx={{
@@ -209,6 +211,40 @@ const [assignedUser, setAssignedUser] =
 
                 </FormControl>
 
+                <FormControl
+    fullWidth
+    sx={{ mt: 3 }}
+>
+
+    <InputLabel>
+        Assigned To
+    </InputLabel>
+
+    <Select
+        value={assignedUser}
+        label="Assigned To"
+        onChange={(e) =>
+            setAssignedUser(
+                Number(e.target.value)
+            )
+        }
+    >
+
+        {Users.map((user) => (
+
+            <MenuItem
+                key={user.UserID}
+                value={user.UserID}
+            >
+                {user.DisplayName}
+            </MenuItem>
+
+        ))}
+
+    </Select>
+
+</FormControl>
+
                 <Button
                     variant="contained"
                     sx={{ mt: 2 }}
@@ -225,6 +261,7 @@ const [assignedUser, setAssignedUser] =
                 >
                     Comments
                 </Typography>
+
 
                 {comments.length === 0 && (
                     <Typography

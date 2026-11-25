@@ -28,9 +28,9 @@ export default function WorkItemsGrid({
 );
 
 const userLookup = Object.fromEntries(
-    (users ?? []).map((Users) => [
-        Users.UserIDID,
-        Users.DisplayName,
+    (users ?? []).map((user) => [
+        user.UserID,
+        user.DisplayName,
     ])
 );
 
@@ -72,12 +72,12 @@ const userLookup = Object.fromEntries(
                 params.value,
         },
           {
-            field: "UserID",
+            field: "AssignedUserID",
                 headerName: "Assigned",
                 width: 150,
 
                 renderCell: (params: any) =>
-                    priorityLookup[params.value] ??
+                    userLookup[params.value] ??
                     params.value,
             },
 
@@ -115,6 +115,9 @@ const userLookup = Object.fromEntries(
     },
 },
     ];
+
+    console.log(users);
+    console.log(userLookup);
 
     return (
         <div style={{ height: 500, width: "100%" }}>
