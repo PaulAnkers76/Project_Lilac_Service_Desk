@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 
-import { Container, Typography } from "@mui/material";
+import {
+    Container,
+    Typography,
+} from "@mui/material";
 
 import SummaryCards from "../components/SummaryCards";
+import RecentActivity from "../components/RecentActivity";
 
 import { api } from "../services/api";
 
 export default function DashboardPage() {
 
-    const [workItems, setWorkItems] = useState([]);
+    const [workItems, setWorkItems] = useState<any[]>([]);
+
+    const recentItems = [...workItems]
+        .sort(
+            (a, b) =>
+                new Date(b.UpdatedDate).getTime() -
+                new Date(a.UpdatedDate).getTime()
+        )
+        .slice(0, 5);
 
     useEffect(() => {
 
@@ -37,6 +49,10 @@ export default function DashboardPage() {
 
             <SummaryCards
                 workItems={workItems}
+            />
+
+            <RecentActivity
+                items={recentItems}
             />
 
         </Container>
