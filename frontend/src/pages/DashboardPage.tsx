@@ -13,6 +13,7 @@ import { api } from "../services/api";
 export default function DashboardPage() {
 
     const [workItems, setWorkItems] = useState<any[]>([]);
+    const [statuses, setStatuses] = useState<any[]>([]);
 
     const recentItems = [...workItems]
         .sort(
@@ -29,7 +30,14 @@ export default function DashboardPage() {
                 setWorkItems(response.data);
             });
 
+        api.get("/statuses")
+            .then((response) => {
+            setStatuses(response.data);
+    });
+
     }, []);
+
+   console.log(statuses); 
 
     return (
         <Container maxWidth="xl">
@@ -53,6 +61,8 @@ export default function DashboardPage() {
 
             <RecentActivity
                 items={recentItems}
+                statuses={statuses}
+                
             />
 
         </Container>

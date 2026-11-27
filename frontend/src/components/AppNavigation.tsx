@@ -41,6 +41,22 @@ export default function AppNavigation() {
           New Work Item
         </Button>
 
+        <Button
+          color="inherit"
+          component={Link}
+          to="/mywork"
+        >
+          My Work
+        </Button>
+
+        <Button
+          color="inherit"
+          component={Link}
+          to="/Unassigned"
+        >
+          Unassigned Work
+        </Button>
+
       </Toolbar>
     </AppBar>
   );
