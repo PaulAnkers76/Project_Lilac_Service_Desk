@@ -57,6 +57,14 @@ export default function AppNavigation() {
           Unassigned Work
         </Button>
 
+        <Button
+          color="inherit"
+          component={Link}
+          to="/aging"
+>
+          Aging Work
+        </Button>
+
       </Toolbar>
     </AppBar>
   );

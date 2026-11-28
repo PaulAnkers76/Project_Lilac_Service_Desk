@@ -115,7 +115,7 @@ export default function WorkItemDetailsPage() {
 
     };
 
-    const handleSaveStatus = async () => {
+   const handleSaveStatus = async () => {
 
     console.log("Saving Status");
     console.log("Selected Status:", selectedStatus);
@@ -127,7 +127,6 @@ export default function WorkItemDetailsPage() {
             {
                 StatusID: selectedStatus,
                 AssignedUserID: assignedUser
-
             }
         );
 
@@ -141,10 +140,45 @@ export default function WorkItemDetailsPage() {
 
 };
 
+const handleDelete = async () => {
 
-    if (!workItem) {
-        return <div>Loading...</div>;
+    const confirmed = window.confirm(
+        "Are you sure you want to delete this work item?"
+    );
+
+    if (!confirmed) {
+        return;
     }
+
+    try {
+
+        await api.delete(
+            `/workitems/${id}`
+        );
+
+        alert("Work item deleted");
+
+        window.location.href = "/workitems";
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+};
+
+if (!workItem) {
+
+    return (
+        <Container>
+            <Typography variant="h5">
+                Work item not found.
+            </Typography>
+        </Container>
+    );
+
+}
 
     return (
         <Container maxWidth="xl">
@@ -209,6 +243,8 @@ export default function WorkItemDetailsPage() {
 
                     </Select>
 
+                    
+
                 </FormControl>
 
                 <FormControl
@@ -244,6 +280,14 @@ export default function WorkItemDetailsPage() {
     </Select>
 
 </FormControl>
+                <Button
+                    color="error"
+                    variant="contained"
+                    sx={{ mt: 2, mr: 2 }}
+                    onClick={handleDelete}
+                >
+                    Delete Work Item
+                </Button>
 
                 <Button
                     variant="contained"

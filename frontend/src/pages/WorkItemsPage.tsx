@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Container, Typography } from "@mui/material";
 
-import SummaryCards from "../components/SummaryCards";
+
 import WorkItemsGrid from "../components/WorkItemsGrid";
 
 import { api } from "../services/api";

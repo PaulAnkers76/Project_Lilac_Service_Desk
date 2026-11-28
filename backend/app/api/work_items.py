@@ -17,13 +17,6 @@ from app.schemas.update_work_item import (
 router = APIRouter()
 
 
-@router.get("/workitems")
-def get_workitems(
-    db: Session = Depends(get_db)
-):
-    
-    return db.query(WorkItem).all()
-
 from app.schemas.work_item import CreateWorkItemRequest
 
 from app.models.project import Project
@@ -33,18 +26,17 @@ from app.services.workitem_service import (
     get_next_workitem_number
 )
 
-@router.get("/workitems/{workitemid}")
-def get_workitem(
-    workitemid: int,
+@router.get("/workitems")
+def get_workitems(
     db: Session = Depends(get_db)
 ):
 
     return (
         db.query(WorkItem)
         .filter(
-            WorkItem.WorkItemID == workitemid
+            WorkItem.IsDeleted == 0
         )
-        .first()
+        .all()
     )
 
 @router.post("/workitems")
@@ -100,6 +92,21 @@ def create_workitem(
     print("8. Refresh complete")
 
     return workitem
+
+@router.get("/workitems/{workitemid}")
+def get_workitem(
+    workitemid: int,
+    db: Session = Depends(get_db)
+):
+
+    return (
+        db.query(WorkItem)
+        .filter(
+            WorkItem.WorkItemID == workitemid,
+            WorkItem.IsDeleted == False
+        )
+        .first()
+    )
 
 @router.get(
     "/workitems/{workitemid}/comments"
@@ -173,7 +180,8 @@ def update_workitem(
     workitem = (
         db.query(WorkItem)
         .filter(
-            WorkItem.WorkItemID == workitemid
+            WorkItem.WorkItemID == workitemid,
+            WorkItem.IsDeleted == False
         )
         .first()
     )
@@ -194,3 +202,35 @@ def update_workitem(
     db.refresh(workitem)
 
     return workitem
+
+@router.delete("/workitems/{workitemid}")
+def delete_workitem(
+    workitemid: int,
+    db: Session = Depends(get_db)
+):
+
+    workitem = (
+        db.query(WorkItem)
+        .filter(
+            WorkItem.WorkItemID == workitemid
+        )
+        .first()
+    )
+
+    if not workitem:
+
+        return {
+            "error": "Work item not found"
+        }
+
+    workitem.IsDeleted = True
+
+    workitem.UpdatedDate = datetime.now(UTC)
+
+    db.commit()
+
+    return {
+        "message": "Work item deleted"
+    }
+
+  

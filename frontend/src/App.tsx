@@ -13,6 +13,7 @@ import WorkItemDetailsPage from "./pages/WorkItemDetailsPage";
 import MyWorkPage
     from "./pages/MyWorkPage";
 import UnassignedPage from "./pages/UnassignedPage";
+import AgingItems from "./pages/AgingWork";
 
 function App() {
   return (
@@ -50,6 +51,11 @@ function App() {
         <Route
           path="/Unassigned"
           element={<UnassignedPage />}
+        />
+
+        <Route
+          path="/aging"
+          element={<AgingItems />}
         />
 
       </Routes>

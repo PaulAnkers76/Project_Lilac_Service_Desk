@@ -5,6 +5,7 @@ from sqlalchemy import String
 from sqlalchemy import DateTime
 from sqlalchemy import NVARCHAR
 from sqlalchemy import func
+from sqlalchemy import Boolean
 
 from app.database.base import Base
 
@@ -47,3 +48,8 @@ class WorkItem(Base):
         DateTime,
         server_default=func.sysutcdatetime()
     )
+
+    IsDeleted = Column(
+    Boolean,
+    default=False
+)
