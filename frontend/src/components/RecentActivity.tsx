@@ -4,6 +4,10 @@ import {
     Typography,
 } from "@mui/material";
 
+import { DataGrid } from "@mui/x-data-grid";
+
+import { Link } from "react-router-dom";
+
 export default function RecentActivity({
     items,
     statuses,
@@ -19,8 +23,53 @@ export default function RecentActivity({
         ])
     );
 
-    console.log(statuses);
-    console.log(statusLookup);
+    const columns = [
+        {
+            field: "WorkItemNumber",
+            headerName: "Ticket",
+            width: 160,
+
+            renderCell: (params: any) => (
+                <Link
+                    to={`/workitems/${params.row.WorkItemID}`}
+                >
+                    {params.value}
+                </Link>
+            ),
+        },
+        {
+            field: "Title",
+            headerName: "Title",
+            flex: 1,
+        },
+        {
+            field: "StatusID",
+            headerName: "Status",
+            width: 150,
+
+            renderCell: (params: any) =>
+                statusLookup[
+                    Number(params.value)
+                ] ?? params.value,
+        },
+        {
+            field: "UpdatedDate",
+            headerName: "Updated",
+            width: 150,
+
+            renderCell: (params: any) =>
+                new Date(
+                    params.value
+                ).toLocaleDateString(
+                    "en-GB",
+                    {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                    }
+                ),
+        },
+    ];
 
     return (
         <Card sx={{ mt: 4 }}>
@@ -34,31 +83,15 @@ export default function RecentActivity({
                     Recent Activity
                 </Typography>
 
-                {items.map((item) => (
-
-                    <Typography
-                        key={item.WorkItemID}
-                        sx={{ mb: 1 }}
-                    >
-                        {item.WorkItemNumber}
-                        {" - "}
-                        {item.Title}
-                        {" - "}
-                        {statusLookup[Number(item.StatusID)]}
-                        {" - "}
-                        {new Date(
-                            item.UpdatedDate
-                        ).toLocaleDateString(
-                            "en-GB",
-                            {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                            }
-                        )}
-                    </Typography>
-
-                ))}
+                <DataGrid
+                    rows={items}
+                    columns={columns}
+                    getRowId={(row) =>
+                        row.WorkItemID
+                    }
+                    autoHeight
+                    hideFooter
+                />
 
             </CardContent>
 
